@@ -7,9 +7,7 @@ classdef LicenseManager
     properties (Constant, Access = private)
         % Secret master salt for cryptographic HMAC signatures (compiled into MEX/P-Code)
         SECRET_SALT = 'RFL_MATHWORKS_INVERSA_LAPLACE_SECURE_SALT_2026_V1';
-        TRIAL_DAYS = 30;
-        LEMONSQUEEZY_ACTIVATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/activate';
-        LEMONSQUEEZY_VALIDATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/validate';
+        TRIAL_DAYS = 365;
     end
 
     methods (Static)
@@ -35,11 +33,13 @@ classdef LicenseManager
             end
 
             % Check license tier
-            if ismember(lic_info.tier, {'PRO_PERPETUAL', 'PRO_COMMERCIAL', 'ACADEMIC_RESEARCH', 'STUDENT'})
+            if ismember(lic_info.tier, {'COMMUNITY', 'PRO_PERPETUAL', 'PRO_COMMERCIAL', 'ACADEMIC_RESEARCH', 'STUDENT'})
                 is_valid = true;
                 lic_info.status = ['ACTIVE_', lic_info.tier];
                 lic_info.days_left = Inf;
                 switch lic_info.tier
+                    case 'COMMUNITY'
+                        lic_info.message = 'Edición Comunitaria y Académica Activa (Acceso Ilimitado).';
                     case {'PRO_PERPETUAL', 'PRO_COMMERCIAL'}
                         lic_info.message = 'Licencia Comercial PRO Industrial activa.';
                     case 'ACADEMIC_RESEARCH'
@@ -67,73 +67,44 @@ classdef LicenseManager
                 else
                     is_valid = false;
                     lic_info.status = ['EXPIRED_', lic_info.tier];
-                    lic_info.message = 'Su suscripción anual ha concluido. Renuévela en la tienda para continuar.';
+                    lic_info.message = 'Su suscripción ha concluido.';
                 end
                 return;
             else
-                % Trial tier
-                now_dn = now();
-                exp_dn = datenum(lic_info.expiry_date, 'yyyy-mm-dd');
-                inst_dn = datenum(lic_info.install_date, 'yyyy-mm-dd');
-                
-                % Anti-rollback clock tampering check
-                if now_dn < (inst_dn - 1.0)
-                    is_valid = false;
-                    lic_info.status = 'CLOCK_TAMPERED';
-                    lic_info.message = 'Se ha detectado una alteración en el reloj del sistema.';
-                    return;
-                end
-
-                days_left = ceil(exp_dn - now_dn);
-                lic_info.days_left = max(0, days_left);
-
-                if days_left >= 0
-                    is_valid = true;
-                    lic_info.status = 'ACTIVE_TRIAL';
-                    lic_info.message = sprintf('Periodo de prueba activo (%d días restantes de %d).', ...
-                        days_left, laplace.LicenseManager.TRIAL_DAYS);
-                else
-                    is_valid = false;
-                    lic_info.status = 'EXPIRED_TRIAL';
-                    lic_info.message = sprintf('El periodo de prueba de %d días ha concluido.', ...
-                        laplace.LicenseManager.TRIAL_DAYS);
-                end
+                % Default to community access
+                is_valid = true;
+                lic_info.status = 'ACTIVE_COMMUNITY';
+                lic_info.days_left = Inf;
+                lic_info.message = 'Edición Comunitaria y Académica Activa.';
             end
         end
 
         function verify()
-            % VERIFY Asserts that a valid trial or commercial license exists. Throws error if expired.
-            persistent has_notified_trial;
+            % VERIFY Asserts that a valid community, trial, or commercial license exists.
             [is_valid, lic_info] = laplace.LicenseManager.check_status();
 
             if is_valid
-                if strcmp(lic_info.tier, 'TRIAL') && isempty(has_notified_trial)
-                    has_notified_trial = true;
-                    fprintf('[Root-Free Laplace] Modo de prueba activo (%d días restantes). Active con laplace.activate(''CLAVE'')\n', ...
-                        lic_info.days_left);
-                end
                 return;
             end
 
-            % If invalid or expired, display professional activation prompt and halt
+            % If invalid or corrupted, display institutional support info
             fprintf('\n');
             fprintf('===============================================================================\n');
             fprintf(' [AVISO DE LICENCIA] ROOT-FREE LAPLACE INVERSION TOOLBOX                       \n');
             fprintf('===============================================================================\n');
             fprintf(' Estado : %s\n', lic_info.message);
-            fprintf(' Su Host ID para solicitar clave: %s\n\n', laplace.LicenseManager.get_host_id());
-            fprintf(' Para desbloquear el acceso completo sin límites de tiempo:\n');
-            fprintf('   1. Adquiera su clave en la Tienda Oficial: https://lemonsqueezy.com\n');
-            fprintf('   2. Active la toolbox ejecutando:\n');
-            fprintf('         >> laplace.activate(''SU-CLAVE-DE-PRODUCTO'')\n');
+            fprintf(' Su Host ID: %s\n\n', laplace.LicenseManager.get_host_id());
+            fprintf(' Para soporte técnico o consultas de licencias industriales/aeroespaciales:\n');
+            fprintf('   Portal Oficial: https://presidencialaplaceaerospace.org\n');
+            fprintf('   Contacto Oficial: presidencia@laplaceaerospace.org\n');
             fprintf('===============================================================================\n\n');
             
-            error('laplace:LicenseManager:licenseExpired', ...
-                  'Licencia requerida: %s. Ejecute laplace.activate(''CLAVE'') para continuar.', lic_info.message);
+            error('laplace:LicenseManager:licenseError', ...
+                  'Error de licencia: %s. Contacte a presidencia@laplaceaerospace.org', lic_info.message);
         end
 
         function success = activate(key_str, customer_email)
-            % ACTIVATE Validates and saves a commercial activation key (Lemon Squeezy API or Offline RFL)
+            % ACTIVATE Validates and saves an offline cryptographic activation key (RFL-)
             if nargin < 2
                 customer_email = '';
             end
@@ -145,31 +116,22 @@ classdef LicenseManager
                 return;
             end
 
-            % 1. Check if it is an offline Master/Air-gap Key (starts with RFL-)
+            % Check if it is a cryptographic offline key (starts with RFL-)
             if strncmp(key_clean, 'RFL-', 4)
                 [is_key_valid, tier, exp_date] = laplace.LicenseManager.validate_key_format(key_clean);
                 if ~is_key_valid
-                    fprintf('[ERROR] La clave de activación local RFL ingresada no es válida o tiene un formato incorrecto.\n');
+                    fprintf('[ERROR] La clave de activación RFL ingresada no es válida o tiene un formato incorrecto.\n');
                     success = false;
                     return;
                 end
                 if isempty(customer_email)
-                    customer_email = 'customer@licensed-user.org';
+                    customer_email = 'licensed-user@institution.org';
                 end
             else
-                % 2. Automated online verification with Lemon Squeezy License API
-                fprintf('[Root-Free Laplace] Conectando con Lemon Squeezy para verificar la licencia...\n');
-                [is_key_valid, tier, exp_date, lsq_email, err_msg] = laplace.LicenseManager.verify_lemonsqueezy(key_clean);
-                if ~is_key_valid
-                    fprintf('[ERROR] Verificación rechazada por Lemon Squeezy: %s\n', err_msg);
-                    success = false;
-                    return;
-                end
-                if ~isempty(lsq_email)
-                    customer_email = lsq_email;
-                elseif isempty(customer_email)
-                    customer_email = 'lemonsqueezy-customer';
-                end
+                fprintf('[ERROR] Clave no válida. Las claves institucionales inician con prefijo RFL-.\n');
+                fprintf('Para soporte y licencias personalizadas: presidencia@laplaceaerospace.org\n');
+                success = false;
+                return;
             end
 
             lic_info = struct();
@@ -262,15 +224,15 @@ classdef LicenseManager
         end
 
         function lic_info = init_trial(filepath)
-            % Initialize a new 30-day trial record
+            % Initialize a new Community Edition record
             now_dn = now();
             lic_info = struct();
-            lic_info.tier = 'TRIAL';
-            lic_info.customer = 'Evaluator / Community Trial';
+            lic_info.tier = 'COMMUNITY';
+            lic_info.customer = 'Community & Academic User';
             lic_info.install_date = datestr(now_dn, 'yyyy-mm-dd');
-            lic_info.expiry_date = datestr(now_dn + laplace.LicenseManager.TRIAL_DAYS, 'yyyy-mm-dd');
+            lic_info.expiry_date = '2099-12-31';
             lic_info.host_id = laplace.LicenseManager.get_host_id();
-            lic_info.key = 'TRIAL-30-DAYS';
+            lic_info.key = 'COMMUNITY-EDITION';
             lic_info.signature = laplace.LicenseManager.compute_signature(lic_info);
             
             laplace.LicenseManager.write_license_file(filepath, lic_info);
@@ -409,101 +371,7 @@ classdef LicenseManager
             fclose(fid);
         end
 
-        function [is_valid, tier, exp_date, customer_email, err_msg] = verify_lemonsqueezy(key_str)
-            % Online verification against Lemon Squeezy REST API endpoint
-            is_valid = false;
-            tier = 'PRO_ANNUAL';
-            exp_date = datestr(now() + 365, 'yyyy-mm-dd');
-            customer_email = '';
-            err_msg = '';
-
-            url = laplace.LicenseManager.LEMONSQUEEZY_ACTIVATE_URL;
-            host_id = laplace.LicenseManager.get_host_id();
-            resp_struct = [];
-
-            % Attempt 1: native webwrite (standard in MATLAB R2014b+ and Octave)
-            try
-                opt = weboptions('MediaType', 'application/x-www-form-urlencoded', ...
-                                 'HeaderFields', {'Accept', 'application/json'}, ...
-                                 'RequestMethod', 'post', ...
-                                 'Timeout', 15);
-                resp = webwrite(url, 'license_key', key_str, 'instance_name', host_id, opt);
-                if isstruct(resp)
-                    resp_struct = resp;
-                else
-                    resp_struct = jsondecode(char(resp));
-                end
-            catch ME
-                % Fallback via curl
-                try
-                    cmd = sprintf('curl -s -X POST "%s" -H "Accept: application/json" -d "license_key=%s" -d "instance_name=%s"', ...
-                        url, key_str, host_id);
-                    [stat, out] = system(cmd);
-                    if stat == 0 && ~isempty(out) && strncmp(strtrim(out), '{', 1)
-                        resp_struct = jsondecode(out);
-                    end
-                catch
-                end
-
-                if isempty(resp_struct)
-                    msg = ME.message;
-                    if contains(msg, '404') || contains(msg, 'not found', 'IgnoreCase', true)
-                        err_msg = 'La clave no existe para este producto en Lemon Squeezy.';
-                    elseif contains(msg, 'resolve', 'IgnoreCase', true) || contains(msg, 'connection', 'IgnoreCase', true)
-                        err_msg = 'No se pudo conectar con el servidor de Lemon Squeezy. Verifique su conexión a internet.';
-                    else
-                        err_msg = sprintf('Error al contactar con Lemon Squeezy: %s', msg);
-                    end
-                    return;
-                end
-            end
-
-            % Check Lemon Squeezy API response
-            has_activated = isfield(resp_struct, 'activated') && (islogical(resp_struct.activated) && resp_struct.activated || isnumeric(resp_struct.activated) && resp_struct.activated == 1);
-            has_valid = isfield(resp_struct, 'valid') && (islogical(resp_struct.valid) && resp_struct.valid || isnumeric(resp_struct.valid) && resp_struct.valid == 1);
-
-            if has_activated || has_valid
-                is_valid = true;
-                if isfield(resp_struct, 'meta') && isstruct(resp_struct.meta)
-                    m = resp_struct.meta;
-                    if isfield(m, 'customer_email') && ~isempty(m.customer_email)
-                        customer_email = char(m.customer_email);
-                    end
-                    if isfield(m, 'variant_name') && ~isempty(m.variant_name)
-                        v_str = lower(char(m.variant_name));
-                        if contains(v_str, 'student') || contains(v_str, 'estudiante')
-                            tier = 'STUDENT_ANNUAL';
-                        elseif contains(v_str, 'acad') || contains(v_str, 'univers')
-                            tier = 'ACADEMIC_ANNUAL';
-                        elseif contains(v_str, 'perp') || contains(v_str, 'commercial')
-                            tier = 'PRO_PERPETUAL';
-                        else
-                            tier = 'PRO_ANNUAL';
-                        end
-                    end
-                end
-                if isfield(resp_struct, 'license_key') && isstruct(resp_struct.license_key)
-                    lk = resp_struct.license_key;
-                    if isfield(lk, 'expires_at') && ~isempty(lk.expires_at)
-                        raw_exp = char(lk.expires_at);
-                        if length(raw_exp) >= 10
-                            exp_date = raw_exp(1:10);
-                        end
-                    else
-                        exp_date = '2099-12-31';
-                    end
-                end
-            else
-                if isfield(resp_struct, 'error') && ~isempty(resp_struct.error)
-                    err_msg = char(resp_struct.error);
-                elseif isfield(resp_struct, 'message') && ~isempty(resp_struct.message)
-                    err_msg = char(resp_struct.message);
-                else
-                    err_msg = 'La clave ingresada no es válida en Lemon Squeezy.';
-                end
-            end
-        end
-
     end
 
 end
+

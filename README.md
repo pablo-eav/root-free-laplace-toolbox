@@ -3,9 +3,9 @@
 ![Root-Free Laplace Logo](toolbox_logo.png)
 
 [![View Root-Free Laplace on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
-[![Version](https://img.shields.io/badge/version-1.0.3-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
+[![Version](https://img.shields.io/badge/version-1.0.4-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
 [![Platform](https://img.shields.io/badge/platform-MATLAB%20%7C%20Octave-orange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
-[![License](https://img.shields.io/badge/license-Commercial%20%2F%2030--Day%20Trial-green.svg)](https://rootfreelaplace.lemonsqueezy.com/checkout/buy/2b082189-262e-4c99-8ff3-546f4c9b5109?enabled=2159880%2C2159881%2C2159882)
+[![License](https://img.shields.io/badge/license-Community%20%7C%20Academic%20%26%20Research-blue.svg)](https://presidencialaplaceaerospace.org)
 
 **Industrial-Grade Numerical Inversion of Massive-Order Transfer Functions Without Root-Finding.**
 
@@ -44,27 +44,24 @@ The **Root-Free Laplace Inversion Toolbox** computes exact time-domain responses
 
 ---
 
-## 🎁 30-Day Free Trial & Subscriptions
+## 📜 Community Edition & Institutional Licensing
 
-This toolbox includes an **automatic 30-day full-featured evaluation trial** upon installation.
+The **Root-Free Laplace Inversion Toolbox** is distributed with full Community & Academic access for scientific computing, university research, and engineering simulation.
 
-To acquire an annual subscription key (Student, Academic, or Commercial PRO), please visit:
-👉 **[Official Subscription Store (Lemon Squeezy)](https://rootfreelaplace.lemonsqueezy.com/checkout/buy/2b082189-262e-4c99-8ff3-546f4c9b5109?enabled=2159880%2C2159881%2C2159882)**
+- **Community & Academic Edition**: Full access to all computational engines (`laurent_stirling`, `mobius_laguerre`, `taylor_extension`, and `LaplaceGUI`) for research and education.
+- **Commercial, Aerospace & Defense Licensing**: For specialized aerospace flight-control integration, downhole petroleum tools (PetroLaplace™ IP Core), or mission-critical embedded hardware deployment:
+  - **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
+  - **Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
 
-| Subscription Tier | Annual Fee | Target Audience |
-| :--- | :---: | :--- |
-| **Student / Thesis** | **29 € / year** | Undergraduate, Master's, or PhD thesis projects. |
-| **Academic & University** | **129 € / year** | Faculty, university labs, and peer-reviewed publications. |
-| **Commercial PRO Industrial** | **299 € / year** | Engineering firms, aerospace, defense, RF filter design, and commercial deployment. |
-
-Once subscribed, activate your license in MATLAB with:
+To activate an institutional or enterprise license in MATLAB:
 ```matlab
-laplace.activate('YOUR-ANNUAL-KEY', 'your-email@domain.com')
+laplace.activate('YOUR-INSTITUTIONAL-KEY')
 ```
-Check status anytime with:
+Check license status anytime with:
 ```matlab
 laplace.license_status
 ```
+
 
 ---
 
@@ -102,13 +99,16 @@ If you use this toolbox in your scientific research or industrial design, please
 @software{Aballe_Laplace_Toolbox_2026,
   author = {Aballe Vázquez, Pablo Enrique},
   title = {{Root-Free Numerical Laplace Inversion Toolbox for MATLAB \& Octave}},
-  version = {1.0.3},
+  version = {1.0.4},
   year = {2026},
   url = {https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace}
 }
 ```
 
-- **Author**: Pablo Enrique Aballe Vázquez
+- **Author**: Prof. Pablo Enrique Aballe Vázquez
+- **Institution**: International Association for Research in Applied Mathematics & Aerospace Physics (Instituto Laplace)
+- **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
+- **Official Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
 - **MATLAB Central File Exchange**: [https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
 - **GitHub Repository**: [https://github.com/pablo-eav/root-free-numerical-laplace](https://github.com/pablo-eav/root-free-numerical-laplace)
-- **Store & Subscriptions**: [https://rootfreelaplace.lemonsqueezy.com/checkout/buy/2b082189-262e-4c99-8ff3-546f4c9b5109?enabled=2159880%2C2159881%2C2159882](https://rootfreelaplace.lemonsqueezy.com/checkout/buy/2b082189-262e-4c99-8ff3-546f4c9b5109?enabled=2159880%2C2159881%2C2159882)
+
