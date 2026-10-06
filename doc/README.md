@@ -1,143 +1,107 @@
-# Root-Free Numerical Laplace Inversion Toolbox for MATLAB
+# Root-Free Numerical Laplace Inversion Toolbox for MATLAB & Octave
 
-[![View Root-Free Laplace on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
+![Root-Free Laplace Logo](toolbox_logo.png)
 
-> 🔗 **Official MATLAB Central File Exchange Entry (ID: 184728)**:  
-> [https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
+[![View on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
+[![Version](https://img.shields.io/badge/version-1.0.5-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
+[![Platform](https://img.shields.io/badge/platform-MATLAB%20%7C%20Octave-orange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-green.svg)](LICENSE)
 
-A high-performance MATLAB toolbox for **Root-Free Numerical Laplace Inversion** supporting orders from $K = 1$ to $K = 1,000,000$ in standard IEEE 754 double precision (`float64`).
+**Industrial-Grade Numerical Inversion of Massive-Order Transfer Functions Without Root-Finding.**
 
----
+> [!TIP]
+> 🔗 **Official MATLAB Central File Exchange**:  
+> [https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
 
-## 🌟 Key Capabilities
-
-- **100% Root-Free (`roots`-free):** Never computes roots, eigenvalues, or matrix factorizations of denominator polynomials.
-- **Immunity to the Taylor Hump:** Standard Taylor expansions fail catastrophic cancellation for $K > 30$ because coefficients grow like $\sim 10^{30}$. This toolbox uses:
-  1. **Log-space Laurent-Stirling recursion** ($\ln\Gamma$ evaluation) for $z \le z_{\text{fuj}}$.
-  2. **Möbius-Laguerre orthogonal projection** on $L^2[0, \infty)$ with conformal scale tuning $a \approx R_{\text{fuj}} / 2$.
-  3. **Adaptive Taylor prolongation** with overlapping arcs for diffusion and boundary layers.
-- **Orders up to $K = 1,000,000$:** Utilizing `FactorPoly` and `PartialFractions` representations.
-- **Pure MATLAB (R2018b+ Compatible):** Zero external C/MEX compiler dependencies, zero proprietary toolboxes required.
-- **Interactive GUI Studio (`LaplaceGUI`):** Dual real-time plotting of time response and absolute error, catalog of presets, and export to Workspace/CSV.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Overview
+
+The **Root-Free Laplace Inversion Toolbox** computes exact time-domain responses $f(z) = \mathcal{L}^{-1}\{F(s)\}$ of massive dynamic systems, rational fractions, resonant networks, and diffusion PDEs directly in standard IEEE-754 `float64` without calculating a single pole or polynomial root.
+
+### Why Root-Free?
+- **Bypasses Abel-Ruffini Barriers**: Standard algebraic root solvers (`roots`, `eig`, or symbolic `ilaplace`) fail catastrophically for polynomial degrees $K > 15 \dots 25$.
+- **Eliminates High-Precision Bottlenecks**: Unlike classical numerical inversion algorithms (Talbot, Gaver-Stehfest, Euler) that suffer catastrophic numerical cancellation and demand 60–100 decimal digits of multiprecision arithmetic, this toolbox works entirely in native double precision.
+- **Scales to Millions of Poles**: Successfully inverts 5,000 undamped resonant modes ($K = 10,000$) in **0.1 seconds** and Chebyshev transmission lines with **$1,000,000$ poles** with $L_\infty$ error $< 10^{-14}$.
+
+---
+
+## 📦 Key Features
+
+1. **6 Specialized Computing Engines**:
+   - `Laurent-Stirling (float64)`: Dynamic logarithmic scaling with $O(1)$ cascaded pole detection.
+   - `Möbius-Laguerre Conformal`: Maps the open right half-plane $\mathbb{C}^+$ into the unit disk $|w| < 1$, orthogonalizing time responses over $L^2[0, \infty)$.
+   - `Adaptive Taylor Extension`: Analytical continuation via overlapping polynomial arcs for large time horizons.
+   - `Cauchy-Fujiwara Spectral Bound`: Rigorous $O(K)$ bounding of the pole spectral radius $R_{\text{fuj}}$ and safe causal time horizon $z_{\text{fuj}} = 35 / R_{\text{fuj}}$.
+   - `Direct Modal Block`: Matrix-free evaluation for distributed arrays and partial fractions.
+   - `Hybrid Dispatcher`: Autonomous engine selection based on relative degree $\delta$, $R_{\text{fuj}}$, and evaluation interval $[z_{\min}, z_{\max}]$.
+
+2. **Native C MEX Acceleration**:
+   - Core mathematical recurrences (Favard 3-term Laguerre recurrence, Fujiwara bounds, and synthetic polynomial deconvolution) run in native x86-64 machine code.
+
+3. **Interactive Graphical User Interface (`LaplaceGUI`)**:
+   - Complete MATLAB App Designer GUI with live time-domain and logarithmic error displays, engineering presets catalog, and CSV/workspace export.
+
+---
+
+## 📜 Community Edition & Institutional Licensing
+
+The **Root-Free Laplace Inversion Toolbox** is distributed with full Community & Academic access for scientific computing, university research, and engineering simulation.
+
+- **Community & Academic Edition**: Full access to all computational engines (`laurent_stirling`, `mobius_laguerre`, `taylor_extension`, and `LaplaceGUI`) for research and education.
+- **Commercial, Aerospace & Defense Licensing**: For specialized aerospace flight-control integration, downhole petroleum tools (PetroLaplace™ IP Core), or mission-critical embedded hardware deployment:
+  - **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
+  - **Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
+
+- **License**: Released under the permissive **BSD 3-Clause License** for the global MATLAB and Octave community.
+
+---
+
+## ⚡ Quick Start
 
 ### 1. Installation
-In MATLAB, navigate to the `root_free_laplace` directory and execute:
-```matlab
->> start_toolbox
+Double-click the official installer package:
+```text
+root_free_laplace.mltbx
 ```
-This automatically registers the namespace `+laplace`, examples, tests, and GUI into your MATLAB path.
-
-### 2. Inversion of a Transfer Function
+Or run the installation script:
 ```matlab
-% Invert F(s) = 1 / (s^2 + 2*s + 2)
-z = linspace(0, 10, 500);
-[f_vals, info] = laplace.invert([1], [1, 2, 2], z);
-
-% Plot
-plot(z, f_vals);
-xlabel('Time z (s)'); ylabel('f(z)');
+install_toolbox
 ```
 
-### 3. Factored Massive Cascade ($K = 100$)
+### 2. Basic Example
 ```matlab
-% F(s) = 1 / (s + 1)^100
-B = laplace.FactorPoly('roots', -ones(100, 1));
-z = linspace(0, 150, 500);
-[f_vals, info] = laplace.invert(1, B, z);
-```
+% Invert second-order underdamped system: F(s) = 1 / (s^2 + 2*s + 2)
+z = linspace(0, 10, 200);
+f = laplace.invert([1], [1, 2, 2], z);
 
-### 4. 5000 Resonators / 10,000 Undamped Modes
-```matlab
-% Q(s) = prod_{k=1}^5000 (s^2 + k^2)
-pf = laplace.harmonic_resonators(5000);
-z = linspace(1e-5, 0.02, 1000);
-[f_vals, info] = laplace.invert([], pf, z);
-```
+% Launch the interactive GUI
+LaplaceGUI
 
-### 5. Launch the Graphical Desktop Studio
-```matlab
->> LaplaceGUI
+% Run the comprehensive validation test suite
+run_all_tests
 ```
 
 ---
 
-## 📁 Repository Structure
+## 📖 Citation & Contact
 
-```
-root_free_laplace/
-│
-├── start_toolbox.m              # Master initialization & path configuration
-│
-├── +laplace/                    # Toolbox Package Namespace
-│   ├── fujiwara_bound.m         # O(K) spectral radius bound & safe horizon z_fuj
-│   ├── stirling_gamma.m         # Log-space asymptotic Stirling ln(Gamma(x))
-│   ├── eval_laguerre.m          # Vectorized Favard 3-term recurrence for L_n(x)
-│   ├── eval_laguerre_exact.m    # O(K) exact damped Laguerre evaluator
-│   ├── mobius_conformal.m       # Conformal Möbius mapping s -> w = (s-a)/(s+a)
-│   ├── extract_mobius_laguerre_coeffs.m # Synthetic deconvolution in w-space
-│   ├── extract_unified_laurent_coeffs.m # Laurent coefficients with dynamic scaling
-│   ├── FactorPoly.m             # Factored polynomial class (up to K=10^6)
-│   ├── PartialFractions.m       # Modal partial fractions class
-│   ├── chebyshev_network.m      # Chebyshev ladder generator (N=10^6)
-│   ├── harmonic_resonators.m    # 5000 harmonic resonators generator
-│   ├── eval_harmonic_resonators_exact.m # O(1) Dirichlet kernel analytical solution
-│   ├── eval_chebyshev_ladder_exact.m    # Exact Chebyshev ladder benchmark
-│   ├── eval_diffusion_step_exact.m      # Exact diffusion step response (erfc + Fourier)
-│   ├── eval_diffusion_impulse_exact.m   # Exact diffusion impulse response
-│   ├── EngineStirling.m         # Laurent-Stirling Float64 engine
-│   ├── EngineLaguerre.m         # Orthogonal Möbius-Laguerre Float64 engine
-│   ├── EngineTaylorAdaptive.m   # Overlapping Taylor arc prolongation engine
-│   ├── EngineHybrid.m           # Intelligent autonomous dispatcher
-│   └── invert.m                 # Top-level API entry point
-│
-├── examples/                    # Ready-to-run engineering scripts
-│   ├── ex01_basic_rational.m    # Standard 2nd order underdamped system
-│   ├── ex02_harmonic_5000.m     # 5000 harmonic resonators (K=10,000)
-│   ├── ex03_chebyshev_1000000.m # Chebyshev transmission ladder (N=1,000,000)
-│   └── ex04_diffusion_step.m    # 1D heat conduction step response
-│
-├── tests/                       # Automated validation suite
-│   ├── run_all_tests.m          # Master test runner
-│   ├── test_fujiwara.m          # Spectral bound tests
-│   ├── test_stirling.m          # Log-gamma precision tests
-│   ├── test_laguerre.m          # Orthogonality & recurrence tests
-│   ├── test_massive_orders.m    # K=10,000 and K=1,000,000 benchmarks
-│   └── test_hybrid_inversion.m  # Accuracy verification tests
-│
-├── app/
-│   └── LaplaceGUI.m             # Interactive visualization and studio
-│
-└── doc/
-    ├── README.md                # This manual
-    └── TECHNICAL_MANUAL.md      # Detailed mathematical derivations
+If you use this toolbox in your scientific research or industrial design, please cite:
+```bibtex
+@software{Aballe_Laplace_Toolbox_2026,
+  author = {Aballe Vázquez, Pablo Enrique},
+  title = {{Root-Free Numerical Laplace Inversion Toolbox for MATLAB \& Octave}},
+  version = {1.0.5},
+  year = {2026},
+  url = {https://github.com/pablo-eav/root-free-numerical-laplace}
+}
 ```
 
----
+- **Author**: Prof. Pablo Enrique Aballe Vázquez
+- **Institution**: International Association for Research in Applied Mathematics & Aerospace Physics (Instituto Laplace)
+- **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
+- **Official Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
+- **MATLAB Central File Exchange**: [https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
+- **GitHub Repository**: [https://github.com/pablo-eav/root-free-numerical-laplace](https://github.com/pablo-eav/root-free-numerical-laplace)
 
-## 🧪 Running the Test Suite
-
-Execute in MATLAB:
-```matlab
->> run_all_tests
-```
-Expected output:
-```
-=================================================================
-   ROOT-FREE NUMERICAL LAPLACE TOOLBOX - COMPREHENSIVE TEST SUITE
-=================================================================
-
-Running test_fujiwara... PASSED.
-Running test_stirling... PASSED.
-Running test_laguerre... PASSED.
-Running test_massive_orders... PASSED.
-Running test_hybrid_inversion... PASSED.
-
------------------------------------------------------------------
-SUCCESS: All 5 test suites passed cleanly.
-=================================================================
-```

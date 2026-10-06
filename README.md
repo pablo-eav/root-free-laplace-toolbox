@@ -2,11 +2,17 @@
 
 ![Root-Free Laplace Logo](toolbox_logo.png)
 
+[![View on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
 [![Version](https://img.shields.io/badge/version-1.0.5-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
-[![Platform](https://img.shields.io/badge/platform-MATLAB%20%7C%20Octave-orange.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
+[![Platform](https://img.shields.io/badge/platform-MATLAB%20%7C%20Octave-orange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-green.svg)](LICENSE)
 
 **Industrial-Grade Numerical Inversion of Massive-Order Transfer Functions Without Root-Finding.**
+
+> [!TIP]
+> 🔗 **Official MATLAB Central File Exchange**:  
+> [https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
+
 
 ---
 
@@ -96,5 +102,6 @@ If you use this toolbox in your scientific research or industrial design, please
 - **Institution**: International Association for Research in Applied Mathematics & Aerospace Physics (Instituto Laplace)
 - **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
 - **Official Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
+- **MATLAB Central File Exchange**: [https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox](https://es.mathworks.com/matlabcentral/fileexchange/184873-root-free-numerical-laplace-inversion-toolbox)
 - **GitHub Repository**: [https://github.com/pablo-eav/root-free-numerical-laplace](https://github.com/pablo-eav/root-free-numerical-laplace)
 
