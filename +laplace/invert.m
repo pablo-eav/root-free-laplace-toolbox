@@ -47,9 +47,7 @@ if nargin < 2
     error('Insufficient arguments. Usage: laplace.invert(num, den, z_grid, [options]) or laplace.invert(sys, z_grid, [options])');
 end
 
-% Verify active trial or commercial license
-laplace.LicenseManager.verify();
-
+% Community & Academic Open Access Execution
 options = struct();
 
 % Check if first argument is a tf or zpk object

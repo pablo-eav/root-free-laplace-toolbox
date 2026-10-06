@@ -2,16 +2,11 @@
 
 ![Root-Free Laplace Logo](toolbox_logo.png)
 
-[![View Root-Free Laplace on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
-[![Version](https://img.shields.io/badge/version-1.0.4-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
-[![Platform](https://img.shields.io/badge/platform-MATLAB%20%7C%20Octave-orange.svg)](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
-[![License](https://img.shields.io/badge/license-Community%20%7C%20Academic%20%26%20Research-blue.svg)](https://presidencialaplaceaerospace.org)
+[![Version](https://img.shields.io/badge/version-1.0.5-blue.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
+[![Platform](https://img.shields.io/badge/platform-MATLAB%20%7C%20Octave-orange.svg)](https://github.com/pablo-eav/root-free-numerical-laplace)
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-green.svg)](LICENSE)
 
 **Industrial-Grade Numerical Inversion of Massive-Order Transfer Functions Without Root-Finding.**
-
-> [!TIP]
-> 🔗 **Official MATLAB Central File Exchange Entry (ID: 184728)**:  
-> [https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
 
 ---
 
@@ -53,15 +48,7 @@ The **Root-Free Laplace Inversion Toolbox** is distributed with full Community &
   - **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
   - **Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
 
-To activate an institutional or enterprise license in MATLAB:
-```matlab
-laplace.activate('YOUR-INSTITUTIONAL-KEY')
-```
-Check license status anytime with:
-```matlab
-laplace.license_status
-```
-
+- **License**: Released under the permissive **BSD 3-Clause License** for the global MATLAB and Octave community.
 
 ---
 
@@ -99,9 +86,9 @@ If you use this toolbox in your scientific research or industrial design, please
 @software{Aballe_Laplace_Toolbox_2026,
   author = {Aballe Vázquez, Pablo Enrique},
   title = {{Root-Free Numerical Laplace Inversion Toolbox for MATLAB \& Octave}},
-  version = {1.0.4},
+  version = {1.0.5},
   year = {2026},
-  url = {https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace}
+  url = {https://github.com/pablo-eav/root-free-numerical-laplace}
 }
 ```
 
@@ -109,6 +96,5 @@ If you use this toolbox in your scientific research or industrial design, please
 - **Institution**: International Association for Research in Applied Mathematics & Aerospace Physics (Instituto Laplace)
 - **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
 - **Official Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
-- **MATLAB Central File Exchange**: [https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace](https://es.mathworks.com/matlabcentral/fileexchange/184728-root-free-numerical-laplace)
 - **GitHub Repository**: [https://github.com/pablo-eav/root-free-numerical-laplace](https://github.com/pablo-eav/root-free-numerical-laplace)
 

@@ -14,23 +14,18 @@ classdef LicenseManager
 
         function [is_valid, lic_info] = check_status()
             % CHECK_STATUS Returns license validity, tier, remaining days, and description
-            lic_file = laplace.LicenseManager.get_license_filepath();
-            
-            if ~exist(lic_file, 'file')
-                % First run: initialize 30-day automatic trial
-                lic_info = laplace.LicenseManager.init_trial(lic_file);
-            else
-                lic_info = laplace.LicenseManager.read_license_file(lic_file);
-            end
-
-            % Validate tamper-resistant signature
-            calc_sig = laplace.LicenseManager.compute_signature(lic_info);
-            if ~isfield(lic_info, 'signature') || ~strcmp(lic_info.signature, calc_sig)
-                is_valid = false;
-                lic_info.status = 'CORRUPTED';
-                lic_info.message = 'El archivo de licencia ha sido modificado o está corrupto.';
-                return;
-            end
+            is_valid = true;
+            lic_info = struct();
+            lic_info.is_valid = true;
+            lic_info.tier = 'COMMUNITY';
+            lic_info.status = 'ACTIVE_COMMUNITY';
+            lic_info.days_left = Inf;
+            lic_info.message = 'Edición Comunitaria y Académica Activa (Acceso Ilimitado).';
+            lic_info.customer_email = 'community@laplace-rootfree.org';
+            lic_info.expiry_date = '2099-12-31';
+            lic_info.host_id = 'OPEN-ACCESS-COMMUNITY';
+            lic_info.signature = 'VALID';
+            return;
 
             % Check license tier
             if ismember(lic_info.tier, {'COMMUNITY', 'PRO_PERPETUAL', 'PRO_COMMERCIAL', 'ACADEMIC_RESEARCH', 'STUDENT'})
@@ -80,27 +75,8 @@ classdef LicenseManager
         end
 
         function verify()
-            % VERIFY Asserts that a valid community, trial, or commercial license exists.
-            [is_valid, lic_info] = laplace.LicenseManager.check_status();
-
-            if is_valid
-                return;
-            end
-
-            % If invalid or corrupted, display institutional support info
-            fprintf('\n');
-            fprintf('===============================================================================\n');
-            fprintf(' [AVISO DE LICENCIA] ROOT-FREE LAPLACE INVERSION TOOLBOX                       \n');
-            fprintf('===============================================================================\n');
-            fprintf(' Estado : %s\n', lic_info.message);
-            fprintf(' Su Host ID: %s\n\n', laplace.LicenseManager.get_host_id());
-            fprintf(' Para soporte técnico o consultas de licencias industriales/aeroespaciales:\n');
-            fprintf('   Portal Oficial: https://presidencialaplaceaerospace.org\n');
-            fprintf('   Contacto Oficial: presidencia@laplaceaerospace.org\n');
-            fprintf('===============================================================================\n\n');
-            
-            error('laplace:LicenseManager:licenseError', ...
-                  'Error de licencia: %s. Contacte a presidencia@laplaceaerospace.org', lic_info.message);
+            % VERIFY Always asserts valid open community license
+            return;
         end
 
         function success = activate(key_str, customer_email)
