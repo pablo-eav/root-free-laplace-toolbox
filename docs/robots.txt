@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pablo-eav.github.io/root-free-numerical-laplace/sitemap.xml
