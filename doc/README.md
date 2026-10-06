@@ -49,12 +49,21 @@ The **Root-Free Laplace Inversion Toolbox** computes exact time-domain responses
 
 The **Root-Free Laplace Inversion Toolbox** is distributed with full Community & Academic access for scientific computing, university research, and engineering simulation.
 
-- **Community & Academic Edition**: Full access to all computational engines (`laurent_stirling`, `mobius_laguerre`, `taylor_extension`, and `LaplaceGUI`) for research and education.
-- **Commercial, Aerospace & Defense Licensing**: For specialized aerospace flight-control integration, downhole petroleum tools (PetroLaplace™ IP Core), or mission-critical embedded hardware deployment:
-  - **Official Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
-  - **Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
+- **Community & Academic Edition**: Free access under the **BSD 3-Clause License** for open scientific computing, university research, and engineering exploration.
+- **Commercial PRO Industrial & Aerospace Licensing**: For corporate deployment, commercial aerospace avionics, downhole petroleum tools (PetroLaplace™ IP Core), proprietary closed-source integration, and priority SLA technical support:
 
-- **License**: Released under the permissive **BSD 3-Clause License** for the global MATLAB and Octave community.
+| Tier | Fee | Included Benefits |
+| :--- | :---: | :--- |
+| **Student / Thesis** | **29 € / year** | Annual support, single workstation, educational thesis projects. |
+| **Academic & Faculty Lab** | **129 € / year** | Multi-seat university lab access, academic citation support. |
+| **Commercial PRO Industrial** | **299 € / year** | Priority SLA email support, commercial deployment, multi-core C/MEX engine. |
+| **Aerospace / Enterprise IP** | *Custom* | DO-178C DAL-A verification artifacts & synthesizable FPGA RTL. |
+
+👉 **[Purchase Commercial License on Official Store (Lemon Squeezy)](https://rootfreelaplace.lemonsqueezy.com/checkout/buy/2b082189-262e-4c99-8ff3-546f4c9b5109?enabled=2159880%2C2159881%2C2159882)**
+
+For custom corporate agreements or enterprise billing:
+- **Official Institutional Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
+- **Direct Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
 
 ---
 
