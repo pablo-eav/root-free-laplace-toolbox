@@ -59,9 +59,9 @@ The **Root-Free Laplace Inversion Toolbox** is distributed with full Community &
 | **Commercial PRO Industrial** | **299 € / year** | Priority SLA email support, commercial deployment, multi-core C/MEX engine. |
 | **Aerospace / Enterprise IP** | *Custom* | DO-178C DAL-A verification artifacts & synthesizable FPGA RTL. |
 
-👉 **[Purchase Commercial License on Official Store (Lemon Squeezy)](https://rootfreelaplace.lemonsqueezy.com/checkout/buy/2b082189-262e-4c99-8ff3-546f4c9b5109?enabled=2159880%2C2159881%2C2159882)**
+👉 **[Institutional & Commercial Licensing Portal](https://presidencialaplaceaerospace.org)**
 
-For custom corporate agreements or enterprise billing:
+For custom corporate agreements, SLA support, or enterprise billing:
 - **Official Institutional Portal**: [https://presidencialaplaceaerospace.org](https://presidencialaplaceaerospace.org)
 - **Direct Contact**: [presidencia@laplaceaerospace.org](mailto:presidencia@laplaceaerospace.org)
 
